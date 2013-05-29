@@ -7,8 +7,27 @@ namespace CenturionCLI
 	{
 		public static void Main (string[] args)
 		{
-			for (int i = 0; i<100; i++) 
+			Centurion.ResetConsoleColours (true);
+			Centurion centurion = new Centurion ();
+			centurion.Start ();
+		}
+	}
+
+	class Centurion
+	{
+		private int Round;
+
+		public Centurion()
+		{
+			this.Round = 0;
+		}
+
+		public void Start ()
+		{
+			while (this.Round < 100) 
 			{
+				PrintRound ();
+
 				CountdownTimer timer = new CountdownTimer (55);
 				timer.StartCountdown ();
 
@@ -17,7 +36,26 @@ namespace CenturionCLI
 				System.Threading.Thread.Sleep (5000);
 				tc.StopFlashing();
 
-				i++;
+				this.Round++;
+			}
+		}
+
+		public void PrintRound()
+		{
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.BackgroundColor = ConsoleColor.Green;
+			Console.WriteLine (String.Format("Round: {0}", this.Round));
+			Console.WriteLine ();
+			ResetConsoleColours (false);
+		}
+
+		public static void ResetConsoleColours(bool clear)
+		{
+			Console.BackgroundColor = ConsoleColor.White;
+			Console.ForegroundColor = ConsoleColor.Black;
+
+			if (clear) {
+				Console.Clear ();
 			}
 		}
 	}
@@ -91,9 +129,7 @@ namespace CenturionCLI
 			if (this.Thread.IsAlive) {
 				this.Thread.Abort ();
 			}
-			Console.BackgroundColor = ConsoleColor.White;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.Clear ();
+			Centurion.ResetConsoleColours (true);
 		}
 
 		/// <summary>
@@ -124,6 +160,3 @@ namespace CenturionCLI
 		}
 	}
 }
-
-
-
